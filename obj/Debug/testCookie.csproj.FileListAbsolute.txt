@@ -1,0 +1,10 @@
+D:\c#_and_dot_net_web\testCookie\bin\testCookie.dll.config
+D:\c#_and_dot_net_web\testCookie\bin\testCookie.dll
+D:\c#_and_dot_net_web\testCookie\bin\testCookie.pdb
+D:\c#_and_dot_net_web\testCookie\obj\Debug\testCookie.csproj.AssemblyReference.cache
+D:\c#_and_dot_net_web\testCookie\obj\Debug\testCookie.csproj.CoreCompileInputs.cache
+D:\c#_and_dot_net_web\testCookie\obj\Debug\testCookie.dll
+D:\c#_and_dot_net_web\testCookie\obj\Debug\testCookie.pdb
+D:\c#_and_dot_net_web\testCookie\bin\Newtonsoft.Json.dll
+D:\c#_and_dot_net_web\testCookie\bin\Newtonsoft.Json.xml
+D:\c#_and_dot_net_web\testCookie\obj\Debug\testCookie.csproj.CopyComplete

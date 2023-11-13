@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Test Cookie</title>
+    <script src="assest/jquery.min.js"></script>
+    <script src="assest/jquery-confirm.min.js"></script>
+    <link href="assest/jquery-confirm.min.css" rel="stylesheet" />
+
+    <script src="assest/bootstrap.bundle.min.js"></script>
+    <link href="assest/bootstrap.min.css" rel="stylesheet" />
+
+    <script src="assest/cookieFN/cookie.js"></script>
+    <style>
+        .not-show {
+            display: none !important
+        }
+    </style>
+</head>
+<body>
+    <button id="idcmdlogin" class="btn btn-primary not-show">Login</button>
+    <button id="idcmdlogout" class="btn btn-warning not-show">Logout</button>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#idcmdlogin').removeClass('not-show');
+            function form_login() {
+                $.confirm({
+                    title: 'Đăng nhập',
+                    content: `
+                    <span class="login100-form-title">
+                    Member Login
+                    </span>
+                    <div>
+                    <input class="dai-vua-vua" type="text" id="masv" placeholder="Mã SV">
+                    </div>
+                    <div>
+                    <input class="dai-vua-vua" type="password" id="pw" placeholder="Password">
+                    </div>
+                    <div id='dang-nhap-sai'></div>
+                        `,
+                    buttons: {
+                        ok: {
+                            text: 'login',
+                            keys: ['enter'],
+                            action: function () {
+                                check_login();
+                            }
+                        },
+                        cancle: {
+
+                        }
+                    },
+                    onContentReady: {
+
+                    }
+                });
+            }
+            $('#idcmdlogin').on('click', function () {
+                form_login();
+            });
+
+            function check_login() {
+                //lấy dc masv+pw người dùng nhập
+                var masv = $('#masv').val();
+                var pw = $('#pw').val();
+
+                $.post('api.aspx',
+                    {
+                        action: 'login',
+                        masv: masv,
+                        pw: pw
+                    },
+                    function (data) {
+                        var json = JSON.parse(data);
+                        if (json.ok) {
+                            console.log(json.ok);
+                            //chào
+                           // chao_hoi(json);
+                            //lưu cookie
+                            $('#idcmdlogout').removeClass('not-show');
+                            $('#idcmdlogin').addClass('not-show');
+
+                            setCookie("masv", json.masv, 0)
+                            setCookie("cc", json.cc, 0)
+                            //dialog_login.close(); //đóng form lại vì nó hoàn thành nhiệm vụ rồi
+                        } else {
+                            //show form login
+                            //form_login(); //form ko đóng, nên ko cần show mới
+                           // $('#dang-nhap-sai').html(json.msg)
+                            //alert(json.msg);
+                        }
+                    });
+            }
+            //
+            function check_cc() {
+                //nếu ko có cc thì ko cần gửi
+                //gửi cc(nếu có) lên api
+                //nhận về OK: chào hoten
+                //nếu not ok: show form login
+                //var cc = getCookie('cc');
+                //var masv = getCookie('masv');
+                //if (cc && masv)
+                if (1 == 1) {
+                    console.log('check cc trên api xem cc này ok ko?')
+                    $.post('api.aspx',
+                        {
+                            action: 'check_cc',
+                            //masv: masv,  //cookie thì auto gửi, ko cần coder gửi
+                            //cc: cc
+                        },
+                        function (data) {
+                            var json = JSON.parse(data);
+                            if (json.ok) {
+                                $('#idcmdlogout').removeClass('not-show');
+                                $('#idcmdlogin').addClass('not-show');
+                                //have cookie in here alert message or replace any you want to show when refresh page when have cookie
+                                $.alert({
+                                    title: 'success!',
+                                    content: 'logined! have cookie',
+                                });
+                            } else {
+                                //show form login
+                                form_login();
+                            }
+                        }
+                    )
+                } else {
+                    console.log('ko thấy cc trên máy nên ko gửi lên api')
+                    form_login();
+                }
+            }
+            function do_logout() {
+                eraseCookie("masv");
+                eraseCookie("cc");
+               // chao_hoi({ ok: false })
+                form_login();
+            }
+            $('#idcmdlogout').on('click', function () {
+                do_logout();
+            });
+            //$('#cmd-login').click(function () { form_login(); });
+            //$('#cmd-logout').click(function () { do_logout(); });
+            check_cc(); //tự gọi hàm này mỗi khi tải trang xong
+
+        });
+    </script>
+</body>
+</html>
